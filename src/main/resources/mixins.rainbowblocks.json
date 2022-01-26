@@ -1,0 +1,13 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.7",
+  "package": "net.wyvest.rainbowblocks.mixin",
+  "plugin": "net.wyvest.rainbowblocks.plugin.RainbowBlocksPlugin",
+  "refmap": "mixins.${id}.refmap.json",
+  "mixins": [
+    "VertexLighterFlatMixin",
+    "BlockModelRendererMixin_OptiFine",
+    "BlockModelRendererMixin_NoOptiFine"
+  ],
+  "verbose": true
+}

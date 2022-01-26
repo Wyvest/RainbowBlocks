@@ -1,7 +1,7 @@
-package com.example.template.updater;
+package net.wyvest.rainbowblocks.updater;
 
-import com.example.template.ForgeTemplate;
-import com.example.template.config.TemplateConfig;
+import net.wyvest.rainbowblocks.RainbowBlocks;
+import net.wyvest.rainbowblocks.config.BlocksConfig;
 import com.google.gson.JsonObject;
 import gg.essential.api.EssentialAPI;
 import gg.essential.api.utils.Multithreading;
@@ -24,17 +24,17 @@ public class Updater {
     public static void update() {
         Multithreading.runAsync(() -> {
             try {
-                JsonObject latestRelease = WebUtil.fetchJSON("https://api.github.com/repos/W-OVERFLOW/" + ForgeTemplate.ID + "/releases/latest").getObject();
+                JsonObject latestRelease = WebUtil.fetchJSON("https://api.github.com/repos/Wyvest/" + RainbowBlocks.ID + "/releases/latest").getObject();
                 latestTag = latestRelease.get("tag_name").getAsString();
-                DefaultArtifactVersion currentVersion = new DefaultArtifactVersion(StringUtils.substringBefore(ForgeTemplate.VER, "-"));
+                DefaultArtifactVersion currentVersion = new DefaultArtifactVersion(StringUtils.substringBefore(RainbowBlocks.VER, "-"));
                 DefaultArtifactVersion latestVersion = new DefaultArtifactVersion(StringUtils.substringBefore(StringUtils.substringAfter(latestTag, "v"), "-"));
                 if (currentVersion.compareTo(latestVersion) >= 0) {
                     return;
                 }
                 updateUrl = latestRelease.get("assets").getAsJsonArray().get(0).getAsJsonObject().get("browser_download_url").getAsString();
                 if (!updateUrl.isEmpty()) {
-                    if (TemplateConfig.showUpdate) {
-                        EssentialAPI.getNotifications().push(ForgeTemplate.NAME, ForgeTemplate.NAME + " has a new update (" + latestTag + ")! Click here to download it automatically!", Updater::openUpdateGui);
+                    if (BlocksConfig.showUpdate) {
+                        EssentialAPI.getNotifications().push(RainbowBlocks.NAME, RainbowBlocks.NAME + " has a new update (" + latestTag + ")! Click here to download it automatically!", Updater::openUpdateGui);
                     }
                     shouldUpdate = true;
                 }
@@ -53,7 +53,7 @@ public class Updater {
         if (file.exists()) return true;
         url = url.replace(" ", "%20");
         try {
-            WebUtil.downloadToFile(url, file, ForgeTemplate.NAME + "/" + ForgeTemplate.VER);
+            WebUtil.downloadToFile(url, file, RainbowBlocks.NAME + "/" + RainbowBlocks.VER);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -71,11 +71,11 @@ public class Updater {
             try {
                 String runtime = getJavaRuntime();
                 if (Minecraft.isRunningOnMac) {
-                    UDesktop.open(ForgeTemplate.jarFile.getParentFile());
+                    UDesktop.open(RainbowBlocks.jarFile.getParentFile());
                 }
-                File file = new File(ForgeTemplate.modDir.getParentFile(), "Deleter-1.2.jar");
+                File file = new File(RainbowBlocks.modDir.getParentFile(), "Deleter-1.2.jar");
                 Runtime.getRuntime()
-                        .exec("\"" + runtime + "\" -jar \"" + file.getAbsolutePath() + "\" \"" + ForgeTemplate.jarFile.getAbsolutePath() + "\"");
+                        .exec("\"" + runtime + "\" -jar \"" + file.getAbsolutePath() + "\" \"" + RainbowBlocks.jarFile.getAbsolutePath() + "\"");
             } catch (Exception e) {
                 e.printStackTrace();
             }

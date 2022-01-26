@@ -7,11 +7,11 @@ plugins {
 }
 
 version = mod_version
-group = "com.example"
+group = "net.wyvest"
 archivesBaseName = mod_name
 
 blossom {
-    String className = "src/main/java/com/example/template/ForgeTemplate.java"
+    String className = "src/main/java/net/wyvest/rainbowblocks/RainbowBlocks.java"
     replaceToken("@VER@", project.version, className)
     replaceToken("@NAME@", mod_name, className)
     replaceToken("@ID@", mod_id, className)
@@ -120,7 +120,9 @@ reobf {
 
 tasks.reobfJar.dependsOn tasks.shadowJar
 sourceSets {
+    dummy
     main {
+        compileClasspath += dummy.output
         ext.refMap = "mixins.${mod_id}.refmap.json"
     }
 }
